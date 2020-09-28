@@ -2,9 +2,6 @@ package com.example.websocket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @SpringBootApplication
 public class WebsocketApplication {
@@ -13,8 +10,4 @@ public class WebsocketApplication {
         SpringApplication.run(WebsocketApplication.class, args);
     }
 
-    @Bean
-    public ServerEndpointExporter getServerEndpointExporter(){
-        return new ServerEndpointExporter();
-    }
 }

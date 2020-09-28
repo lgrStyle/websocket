@@ -1,6 +1,6 @@
 package com.example.websocket.demo;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -9,17 +9,17 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Log4j2
+@Slf4j
 @ServerEndpoint("/websocket")
 @Component
-public class Demo {
+public class OriginalWebsocket {
 
     private static Map<String, Session> sessionMap = new ConcurrentHashMap<>();
 
     @OnOpen
     public void onOpen(Session session) {
         sessionMap.put(session.getId(), session);
-        log.info("onOpen id={},size={}", session.getId(), getSessionSize());
+        log.info("onOpen id={},size={}", session.getId(), getOnlineCount());
         try {
             session.getBasicRemote().sendText("欢迎光临！");
         } catch (IOException e) {
@@ -30,7 +30,7 @@ public class Demo {
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         sessionMap.remove(session.getId());
-        log.info("onClose id={},reason={},size={}", session.getId(), closeReason.toString(), getSessionSize());
+        log.info("onClose id={},reason={},size={}", session.getId(), closeReason.toString(), getOnlineCount());
     }
 
     @OnMessage
@@ -49,7 +49,7 @@ public class Demo {
         log.error("onError", throwable);
     }
 
-    public int getSessionSize() {
+    public static int getOnlineCount() {
         return sessionMap.size();
     }
 }
