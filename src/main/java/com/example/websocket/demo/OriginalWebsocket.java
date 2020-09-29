@@ -50,6 +50,7 @@ public class OriginalWebsocket {
     }
 
     public static void sendMessage(String message) {
+        log.info("sendMessage message={}", message);
         sessionMap.entrySet().forEach(p -> {
             try {
                 p.getValue().getBasicRemote().sendText(message);
