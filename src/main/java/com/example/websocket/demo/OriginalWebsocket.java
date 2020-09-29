@@ -36,11 +36,7 @@ public class OriginalWebsocket {
     @OnMessage
     public void onMessage(Session session, String message) {
         log.info("onMessage id={},message={}", session.getId(), message);
-        try {
-            session.getBasicRemote().sendText("已收到来信");
-        } catch (IOException e) {
-            log.error("onMessage", e);
-        }
+        sendMessage(session.getId() + "：" + message);
     }
 
     @OnError
@@ -51,5 +47,15 @@ public class OriginalWebsocket {
 
     public static int getOnlineCount() {
         return sessionMap.size();
+    }
+
+    public static void sendMessage(String message) {
+        sessionMap.entrySet().forEach(p -> {
+            try {
+                p.getValue().getBasicRemote().sendText(message);
+            } catch (IOException e) {
+                log.error("sendMessage", e);
+            }
+        });
     }
 }
